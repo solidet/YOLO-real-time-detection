@@ -23,20 +23,16 @@ output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
 #Load Image
 
-img = cv2.imread("yolo_object_detection/me.jpg")
-img = cv2.resize(img, None, fx=1, fy=1)
+img = cv2.imread("./room.jpg")
+img = cv2.resize(img, None, fx=0.4, fy=0.4) # fx and fy values depend on the size of image
 height, width, channels = img.shape
 
 # detecting objects
 blob = cv2.dnn.blobFromImage(img, 0.00392, (416, 416), (0,0,0), True, crop=False)
 
-# for b in blob:
-#     for name, img_blob in enumerate(b):
-#         cv2.imshow(str(name), img_blob)
-
 net.setInput(blob)
 outs = net.forward(output_layers)
-# print(outs)
+
 
 #showing info on the screen
 boxes = []
@@ -54,6 +50,7 @@ for out in outs:
             w = int(detection[2] * width)
             h = int(detection[3] * height)
 
+            # Center point
             # cv2.circle(img, (center_x, center_y), 10, (0, 255), 2)
 
             # Rectangle coordinates
